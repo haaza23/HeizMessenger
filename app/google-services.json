@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "439886605980",
+    "firebase_url": "https://heizmessenger.firebaseio.com",
+    "project_id": "heizmessenger",
+    "storage_bucket": "heizmessenger.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439886605980:android:53f5c04cc3d4ca5f0c4759",
+        "android_client_info": {
+          "package_name": "com.heiztechno.heizmessenger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439886605980-c1hqn0nh15edag7306lk6hoshnltlu4s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFkhn2wQ9e8AX3DqfAZoNOTJDbdn1kLHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439886605980-c1hqn0nh15edag7306lk6hoshnltlu4s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

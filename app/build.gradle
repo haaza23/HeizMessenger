@@ -38,8 +38,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'com.google.firebase:firebase-storage:19.1.0'
     implementation 'com.google.firebase:firebase-database:19.1.0'
-    implementation 'de.hdodenhof:circleimageview:3.0.2'             //Libreria para adaptar imagen a boton
-    implementation "com.xwray:groupie:2.7.0"                        //Libreria groupie para Recycler View
+    implementation 'de.hdodenhof:circleimageview:3.0.2'
+    //Libreria para adaptar imagen a boton
+    implementation "com.xwray:groupie:2.7.0"
+    //Libreria groupie para Recycler View
     implementation 'com.squareup.picasso:picasso:2.71828'           //Libreria Picasso
 }
 

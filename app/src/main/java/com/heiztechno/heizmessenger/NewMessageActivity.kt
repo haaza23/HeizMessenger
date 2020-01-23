@@ -1,5 +1,6 @@
 package com.heiztechno.heizmessenger
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.view.SupportActionModeWrapper
@@ -37,6 +38,14 @@ class NewMessageActivity : AppCompatActivity() {
                     if(user != null){
                         adapter.add(UserItem(user))
                     }
+                }
+
+                adapter.setOnItemClickListener { item, view ->
+                    val intent = Intent(view.context, ChatActivity::class.java)
+                    startActivity(intent)
+
+                    finish()                //De esta forma cuando se sale del chat vuelve a la actividad de ultimos mensajes
+
                 }
 
                 rclNewMessage.adapter = adapter

@@ -9,9 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ChatActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LatestMessagesActivity" />
+        </activity>
         <activity android:name=".NewMessageActivity">
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                android:value=".LatestMessagesActivity"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".LatestMessagesActivity" />
             <!-- El meta-data sirve para Boton de back -->
         </activity>
         <activity android:name=".LatestMessagesActivity">
@@ -21,7 +27,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".LogInActivity" />
     </application>
 

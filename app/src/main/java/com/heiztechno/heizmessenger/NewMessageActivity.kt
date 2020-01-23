@@ -5,6 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.view.SupportActionModeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_new_message.*
@@ -19,12 +23,27 @@ class NewMessageActivity : AppCompatActivity() {
         supportActionBar?.title = "Seleccionar Contacto"
 
 
-        val adapter = GroupAdapter<GroupieViewHolder>()
+        fetchUsers()
+    }
 
-        adapter.add(UserItem())
-        adapter.add(UserItem())
-        adapter.add(UserItem())
+    private fun fetchUsers(){
+        val ref = FirebaseDatabase.getInstance().getReference("/users")
+        ref.addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(p0: DataSnapshot) {
+                val adapter = GroupAdapter<GroupieViewHolder>()
 
-        rclNewMessage.adapter = adapter
+                p0.children.forEach{
+                    val user = it.getValue(User::class.java)
+                    if(user != null){
+                        adapter.add(UserItem(user))
+                    }
+                }
+
+                rclNewMessage.adapter = adapter
+            }
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
     }
 }

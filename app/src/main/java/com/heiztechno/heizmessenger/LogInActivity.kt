@@ -1,6 +1,7 @@
 package com.heiztechno.heizmessenger
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
@@ -63,7 +64,9 @@ class LogInActivity: AppCompatActivity(){
                 if (it.isSuccessful){
                     Log.d("Firebase", "Se logeo correctamente el uid: ${it?.result?.user?.uid}")
                     val user = auth.currentUser
-                    //updateUI
+                    val intent = Intent(this, LatestMessagesActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    startActivity(intent)
                 }else{
                     Toast.makeText(baseContext, "Error en la autenticacion",
                         Toast.LENGTH_SHORT).show()

@@ -7,17 +7,16 @@
     android:layout_marginBottom="8dp">
 
     <TextView
-        android:id="@+id/txtUsername"
+        android:id="@+id/txtMessageDst"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:background="@drawable/rounded_edittext"
         android:maxWidth="300dp"
-        android:padding="16dp"
+        android:padding="8dp"
         android:text="Este es un mensaje muy largo para probar que la burbuja funcione bien y no se pase."
         android:textColor="@color/Black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="16sp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

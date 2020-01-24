@@ -1,7 +1,11 @@
 package com.heiztechno.heizmessenger
 
-class User(val uid: String, val username: String, val profilePicture: String){
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-    constructor(): this("", "", "")
+@Parcelize
+class User(val uid: String, val username: String, val profilePicture: String):Parcelable{
+
+    constructor(): this("", "", "")             //Parcelable es para poder poner el paquete User dentro del intent
 
 }

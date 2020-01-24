@@ -17,6 +17,10 @@ import java.io.LineNumberReader
 
 class NewMessageActivity : AppCompatActivity() {
 
+    companion object{
+        val USER_KEY = "USER_KEY"               //Constante
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_message)
@@ -41,7 +45,11 @@ class NewMessageActivity : AppCompatActivity() {
                 }
 
                 adapter.setOnItemClickListener { item, view ->
+
+                    val userItem = item as UserItem
+
                     val intent = Intent(view.context, ChatActivity::class.java)
+                    intent.putExtra(USER_KEY, userItem.user)
                     startActivity(intent)
 
                     finish()                //De esta forma cuando se sale del chat vuelve a la actividad de ultimos mensajes

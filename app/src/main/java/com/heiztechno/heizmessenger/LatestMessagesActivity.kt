@@ -9,15 +9,24 @@ import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import java.util.*
 
 
 class LatestMessagesActivity : AppCompatActivity() {
+
+    companion object{
+        var currentUser: User? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_latest_messages)
 
-        val fab: View = findViewById(R.id.btnFab)
+        val fab: View = findViewById(R.id.btnFab)           //Floating button (es NECESARIO la declaracion en el gradle de androidX
         fab.setOnClickListener{
 
             /*Snackbar.make(it, "Here's a Snackbar", Snackbar.LENGTH_LONG)    NOTIFICACION ALTERNATIVA A TOAST
@@ -27,10 +36,24 @@ class LatestMessagesActivity : AppCompatActivity() {
 
             val intent = Intent(this, NewMessageActivity::class.java)
             startActivity(intent)
-
         }
 
+        fetchCurrentUser()
         verifyUserLoggedIn()
+    }
+
+    private fun fetchCurrentUser(){
+        val uid = FirebaseAuth.getInstance().uid
+        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        ref.addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                currentUser = p0.getValue(User::class.java)
+            }
+        })
     }
 
     private fun verifyUserLoggedIn(){
@@ -42,7 +65,7 @@ class LatestMessagesActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {       //Verifica que haya un usuario logeado o vuelve al login
         when(item?.itemId){
             R.id.btnLogOut -> {
                 FirebaseAuth.getInstance().signOut()
@@ -55,7 +78,7 @@ class LatestMessagesActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {            //Pone el "Cerrar sesion" en la parte superior
         menuInflater.inflate(R.menu.nav_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }

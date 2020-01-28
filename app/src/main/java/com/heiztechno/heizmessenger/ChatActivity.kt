@@ -32,6 +32,7 @@ class ChatActivity : AppCompatActivity() {
 
         btnSend.setOnClickListener {
             performSendMessage()
+            edtTexto.text.clear()
         }
 
         printMessages()
@@ -63,9 +64,9 @@ class ChatActivity : AppCompatActivity() {
 
                 if(chatMessage != null){
                     if(chatMessage.fromId == FirebaseAuth.getInstance().uid){
-                        adapter.add(ChatFromItem(chatMessage.text))
-                    } else{
                         adapter.add(ChatToItem(chatMessage.text))
+                    } else{
+                        adapter.add(ChatFromItem(chatMessage.text))
                     }
                 }
             }

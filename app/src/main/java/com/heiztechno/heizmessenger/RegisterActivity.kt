@@ -50,7 +50,6 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         txtLogIn.setOnClickListener {
-            Log.d("RegisterActivity", "mostrar pantalla log in")
 
             //Llamar a la actividad de Log In
             val intent = Intent(this, LogInActivity::class.java)
@@ -126,7 +125,6 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun uploadImageToFirebase(){
         if(imageURI == null) return
-        Log.d("RegisterActivity", "Llego aca")
 
         val filename = UUID.randomUUID().toString()                            //ID unico
         val storage = FirebaseStorage.getInstance().getReference("/images/$filename")

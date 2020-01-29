@@ -2,8 +2,10 @@ package com.heiztechno.heizmessenger
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.view.get
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
@@ -17,29 +19,32 @@ lateinit var btnSend: Button
 lateinit var edtMensaje: EditText
 val adapter = GroupAdapter<GroupieViewHolder>()
 
+var toUser: User? = null
+
 class ChatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-
+        adapter.clear()
         btnSend = findViewById(R.id.btnEnviar)
         edtMensaje = findViewById(R.id.edtTexto)
-        rclChat.adapter = adapter
+
+        toUser = intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
 
         val user = intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)         //Obtengo el usuario del intent
         supportActionBar?.title = user.username                             //Pongo como titulo de la activity el usuario
 
         btnSend.setOnClickListener {
             performSendMessage()
-            edtTexto.text.clear()
         }
 
         printMessages()
+        rclChat.adapter = adapter
     }
 
     private fun performSendMessage(){
-        val reference = FirebaseDatabase.getInstance().getReference("/messages").push()
+        val position = rclChat.adapter!!.itemCount            //Para que vaya al ultimo mensaje
 
         val fromId = FirebaseAuth.getInstance().uid
         val user = intent.getParcelableExtra<User>(NewMessageActivity.USER_KEY)
@@ -47,16 +52,30 @@ class ChatActivity : AppCompatActivity() {
 
         if(fromId == null) return
 
+        //Creo un nodo en la db "desde" cada usuario "hacia" cada usuario con los mensajes
+        val reference = FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId").push()
+
+        val toReference = FirebaseDatabase.getInstance().getReference("/user-messages/$toId/$fromId").push()   //Para que carguen los mensajes "recibidos"
+
         val text = edtMensaje.text.toString()
         val chatMessage = ChatMessage(reference.key!!, text, fromId, toId, System.currentTimeMillis()/1000)
+
         reference.setValue(chatMessage)
             .addOnSuccessListener {
-
+                edtTexto.text.clear()
+                rclChat.smoothScrollToPosition(position)            //Para que vaya al ultimo mensaje
+                adapter.notifyDataSetChanged()
             }
+
+        toReference.setValue(chatMessage)           //Cargo el mensaje como fromId en el usuario toId
     }
 
     private fun printMessages(){
-        val reference = FirebaseDatabase.getInstance().getReference("/messages")
+
+        val fromId = FirebaseAuth.getInstance().uid
+        val toId = toUser?.uid
+
+        val reference = FirebaseDatabase.getInstance().getReference("/user-messages/$fromId/$toId")
 
         reference.addChildEventListener(object: ChildEventListener{
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {

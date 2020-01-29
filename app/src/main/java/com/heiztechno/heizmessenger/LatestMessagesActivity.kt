@@ -7,10 +7,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.heiztechno.heizmessenger.NewMessageActivity.Companion.USER_KEY
 import com.heiztechno.heizmessenger.modules.LatestMessageRow
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
@@ -34,6 +36,7 @@ class LatestMessagesActivity : AppCompatActivity() {
         setContentView(R.layout.activity_latest_messages)
 
         rclLastMessages.adapter = adapter
+        rclLastMessages.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
 
         val fab: View = findViewById(R.id.btnFab)           //Floating button (es NECESARIO la declaracion en el gradle de androidX
         fab.setOnClickListener{
@@ -47,9 +50,23 @@ class LatestMessagesActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        addClickUser()
         setupLatestMessages()
         fetchCurrentUser()
         verifyUserLoggedIn()
+    }
+
+    private fun addClickUser(){
+
+        adapter.setOnItemClickListener { item, view ->
+            Log.d("LatestMsg", "Pasa por aca")
+            val intent = Intent(view.context, ChatActivity::class.java)
+
+            val row = item as LatestMessageRow
+
+            intent.putExtra(USER_KEY, row.chatPartnerUser)
+            startActivity(intent)
+        }
     }
 
     private fun setupLatestMessages(){
@@ -94,6 +111,7 @@ class LatestMessagesActivity : AppCompatActivity() {
         ref.addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onDataChange(p0: DataSnapshot) {
                 currentUser = p0.getValue(User::class.java)
+
             }
 
             override fun onCancelled(p0: DatabaseError) {

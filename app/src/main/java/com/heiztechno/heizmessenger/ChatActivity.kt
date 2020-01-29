@@ -97,6 +97,7 @@ class ChatActivity : AppCompatActivity() {
                         adapter.add(ChatFromItem(chatMessage.text))
                     }
                 }
+                rclChat.scrollToPosition(adapter.itemCount - 1)
             }
 
             override fun onCancelled(p0: DatabaseError) {

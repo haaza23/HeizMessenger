@@ -3,17 +3,15 @@ package com.heiztechno.heizmessenger
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.view.SupportActionModeWrapper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.heiztechno.heizmessenger.modules.User
+import com.heiztechno.heizmessenger.modules.UserItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_new_message.*
-import java.io.LineNumberReader
 
 class NewMessageActivity : AppCompatActivity() {
 
@@ -40,7 +38,11 @@ class NewMessageActivity : AppCompatActivity() {
                 p0.children.forEach{
                     val user = it.getValue(User::class.java)
                     if(user != null){
-                        adapter.add(UserItem(user))
+                        adapter.add(
+                            UserItem(
+                                user
+                            )
+                        )
                     }
                 }
 

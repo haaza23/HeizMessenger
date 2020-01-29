@@ -8,17 +8,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.heiztechno.heizmessenger.NewMessageActivity.Companion.USER_KEY
 import com.heiztechno.heizmessenger.modules.LatestMessageRow
+import com.heiztechno.heizmessenger.modules.User
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
-import kotlinx.android.synthetic.main.activity_chat.*
 import kotlinx.android.synthetic.main.activity_latest_messages.*
-import java.util.*
 import kotlin.collections.HashMap
 
 

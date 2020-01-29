@@ -2,15 +2,16 @@ package com.heiztechno.heizmessenger
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import androidx.core.view.get
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.heiztechno.heizmessenger.modules.ChatFromItem
+import com.heiztechno.heizmessenger.modules.ChatToItem
+import com.heiztechno.heizmessenger.modules.User
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import kotlinx.android.synthetic.main.activity_chat.*
@@ -92,9 +93,17 @@ class ChatActivity : AppCompatActivity() {
 
                 if(chatMessage != null){
                     if(chatMessage.fromId == FirebaseAuth.getInstance().uid){
-                        adapter.add(ChatToItem(chatMessage.text))
+                        adapter.add(
+                            ChatToItem(
+                                chatMessage.text
+                            )
+                        )
                     } else{
-                        adapter.add(ChatFromItem(chatMessage.text))
+                        adapter.add(
+                            ChatFromItem(
+                                chatMessage.text
+                            )
+                        )
                     }
                 }
                 rclChat.scrollToPosition(adapter.itemCount - 1)

@@ -1,5 +1,6 @@
-package com.heiztechno.heizmessenger
+package com.heiztechno.heizmessenger.modules
 
+import com.heiztechno.heizmessenger.R
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item

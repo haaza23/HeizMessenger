@@ -1,4 +1,4 @@
-package com.heiztechno.heizmessenger
+package com.heiztechno.heizmessenger.modules
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

@@ -7,7 +7,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.heiztechno.heizmessenger.ChatMessage
 import com.heiztechno.heizmessenger.R
-import com.heiztechno.heizmessenger.User
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item

@@ -3,17 +3,21 @@ package com.heiztechno.heizmessenger
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
+import com.heiztechno.heizmessenger.modules.LatestMessageRow
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
+import kotlinx.android.synthetic.main.activity_chat.*
+import kotlinx.android.synthetic.main.activity_latest_messages.*
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class LatestMessagesActivity : AppCompatActivity() {
@@ -22,9 +26,14 @@ class LatestMessagesActivity : AppCompatActivity() {
         var currentUser: User? = null
     }
 
+    val adapter = GroupAdapter<GroupieViewHolder>()
+    val latestMessagesMap = HashMap<String, ChatMessage>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_latest_messages)
+
+        rclLastMessages.adapter = adapter
 
         val fab: View = findViewById(R.id.btnFab)           //Floating button (es NECESARIO la declaracion en el gradle de androidX
         fab.setOnClickListener{
@@ -38,20 +47,57 @@ class LatestMessagesActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        setupLatestMessages()
         fetchCurrentUser()
         verifyUserLoggedIn()
+    }
+
+    private fun setupLatestMessages(){
+        val fromId = FirebaseAuth.getInstance().uid
+        val ref = FirebaseDatabase.getInstance().getReference("/latest-message/$fromId")
+        ref.addChildEventListener(object: ChildEventListener{
+            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
+                val chatMessage = p0.getValue(ChatMessage::class.java) ?: return
+                latestMessagesMap[p0.key!!] = chatMessage
+                refreshRecyclerView()
+            }
+
+            override fun onChildChanged(p0: DataSnapshot, p1: String?) {    //refresca la pantalla cuando recibe un msj nuevo
+                val chatMessage = p0.getValue(ChatMessage::class.java) ?: return
+                latestMessagesMap[p0.key!!] = chatMessage
+                refreshRecyclerView()
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
+
+            }
+            override fun onChildRemoved(p0: DataSnapshot) {
+
+            }
+        })
+    }
+
+    private fun refreshRecyclerView(){
+        //No es la solucion mas eficaz ya que cte esta borrando y pidiendo los datos de la db
+        adapter.clear()
+        latestMessagesMap.values.forEach{
+            adapter.add(LatestMessageRow(it))
+        }
     }
 
     private fun fetchCurrentUser(){
         val uid = FirebaseAuth.getInstance().uid
         val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
         ref.addListenerForSingleValueEvent(object: ValueEventListener{
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-
             override fun onDataChange(p0: DataSnapshot) {
                 currentUser = p0.getValue(User::class.java)
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
             }
         })
     }

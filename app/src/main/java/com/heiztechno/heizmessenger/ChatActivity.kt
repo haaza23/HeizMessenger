@@ -68,6 +68,15 @@ class ChatActivity : AppCompatActivity() {
             }
 
         toReference.setValue(chatMessage)           //Cargo el mensaje como fromId en el usuario toId
+
+        val latestMessageRef = FirebaseDatabase.getInstance().getReference("/latest-message/$fromId/$toId")   //Solo cambia el texto del ultimo mensaje en la db
+        latestMessageRef.setValue(chatMessage)
+
+        val latestMessageToRef = FirebaseDatabase.getInstance().getReference("/latest-message/$toId/$fromId")   //Solo cambia el texto del ultimo mensaje en la db
+        latestMessageToRef.setValue(chatMessage)
+
+
+
     }
 
     private fun printMessages(){
